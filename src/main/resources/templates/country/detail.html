@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Employee</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+</head>
+<body>
+	<div class="container my-2" align="center">
+
+		<h3>country List</h3>
+		<a href="/admin/countryaddnew" class="btn btn-primary btn-sm mb-3">Add
+			Country</a>
+		<table style="width: 80%" border="1"
+			class="table table-striped table-responsive-md">
+		
+			<tbody>
+					<tr><th>Name</th>
+					<td th:text="${ob.name}"></td></tr>
+<tr>	<th>shortName</th>
+					<td th:text="${ob.shortName}"></td></tr>
+			<tr>			<th>symbol</th>
+					<td th:text="${ob.symbol}"></td></tr>
+				<tr>		<th>IsdCode</th>
+					<td th:text="${ob.IsdCode}"></td></tr>
+				<tr>	<th>largeImageId</th>
+					<td th:text="${ob.largeImageId}"></td></tr>
+				<tr>	<th>midImageId</th>
+					<td th:text="${ob.midImageId}"></td></tr>
+				<tr>	<th>currency</th>
+					<td th:text="${ob.currency}"></td></tr>
+				<tr>		<th>shortImageId</th>
+					<td th:text="${ob.shortImageId}"></td></tr>
+			<tr>		<td><a th:href="@{/admin/countryfind/{id}(id=${ob.id})}"
+						class="btn btn-primary">Update</a> <a
+						th:href="@{/admin/countryfind/{id}(id=${ob.id})}"
+						class="btn btn-danger">Delete</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

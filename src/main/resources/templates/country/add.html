@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Employee</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+</head>
+<body>
+	<div class="container my-2" align="center">
+
+		<h3>country Add</h3>
+		
+			 <form action="#" th:action="@{/admin/countrysave}" th:object="${country}" method="post">
+		<table style="width: 80%" border="1"
+			class="table table-striped table-responsive-md">
+			<thead>
+
+			</thead>
+			<tbody>
+				<tr >
+					<th>Name</th>
+					<td><input type="text" th:field="${ob.name}"></td>
+</tr><tr> 
+					<th>shortName</th>
+					<td><input type="text" th:field="${ob.shortName}"></td>
+					</tr><tr> 
+					<th>symbol</th>
+					<td><input type="text" th:field="${ob.symbol}"></td>
+					</tr><tr> 
+					<th>IsdCode</th>
+					<td><input type="text" th:field="${ob.IsdCode}"></td>
+					</tr><tr> 
+					<th>largeImageId</th>
+					<td><input type="text" th:field="${ob.largeImageId}"></td>
+					</tr><tr> 
+					<th>midImageId</th>
+					<td><input type="text" th:field="${ob.midImageId}"></td>
+					</tr><tr> 
+					<th>currency</th>
+					<td><input type="text" th:field="${ob.currency}"></td>
+					</tr><tr> 
+					<th>shortImageId</th>
+					<td><input type="text" th:field="${ob.shortImageId}"></td>
+					</tr><tr> 
+					<th>Action</th>
+					<td ><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></td>
+				</tr>
+			</tbody>
+		</table>
+		 </form>
+	</div>
+</body>
+</html>
