@@ -1,5 +1,7 @@
 package com.bb.config;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,48 +19,44 @@ import org.springframework.transaction.PlatformTransactionManager;
 import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
-@EnableJpaRepositories(
-    basePackages = "com.bb.primary.repository",
-    entityManagerFactoryRef = "primaryEntityManagerFactory",
-    transactionManagerRef = "primaryTransactionManager"
-)
+@EnableJpaRepositories(basePackages = "com.bb.primary.repository", entityManagerFactoryRef = "primaryEntityManagerFactory", transactionManagerRef = "primaryTransactionManager")
 public class PrimaryDataSourceConfig {
-	
-	 @Value("${spring.datasource.url}")
-	    private String primaryDbUrl;
 
-	    @Value("${spring.datasource.username}")
-	    private String primaryDbUsername;
+	@Value("${spring.datasource.url}")
+	private String primaryDbUrl;
 
-	    @Value("${spring.datasource.password}")
-	    private String primaryDbPassword;
+	@Value("${spring.datasource.username}")
+	private String primaryDbUsername;
 
-    @Primary
-    @Bean(name = "primaryDataSource")
-    public DataSource primaryDataSource() {
-        return DataSourceBuilder.create()
-                .url(primaryDbUrl)
-                .username(primaryDbUsername)
-                .password(primaryDbPassword)
-                .build();
-    }
+	@Value("${spring.datasource.password}")
+	private String primaryDbPassword;
 
-    @Primary
-    @Bean(name = "primaryEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory(
-            @Qualifier("primaryDataSource") DataSource dataSource) {
-        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
-        emf.setDataSource(dataSource);
-        emf.setPackagesToScan("com.bb.primary.model");
-        emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        return emf;
-    }
+	@Primary
+	@Bean(name = "primaryDataSource")
+	public DataSource primaryDataSource() {
+		return DataSourceBuilder.create().url(primaryDbUrl).username(primaryDbUsername).password(primaryDbPassword).build();
+	}
 
-    @Primary
-    @Bean(name = "primaryTransactionManager")
-    public PlatformTransactionManager primaryTransactionManager(
-            @Qualifier("primaryEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
-        return new JpaTransactionManager(entityManagerFactory);
-    }
+	@Primary
+	@Bean(name = "primaryEntityManagerFactory")
+	public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory( @Qualifier("primaryDataSource") DataSource dataSource ) {
+		LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+		emf.setDataSource(dataSource);
+		emf.setPackagesToScan("com.bb.primary.model");
+		emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+		emf.setJpaProperties(additionalProperties());
+		return emf;
+	}
+
+	@Primary
+	@Bean(name = "primaryTransactionManager")
+	public PlatformTransactionManager primaryTransactionManager( @Qualifier("primaryEntityManagerFactory") EntityManagerFactory entityManagerFactory ) {
+		return new JpaTransactionManager(entityManagerFactory);
+	}
+
+	private Properties additionalProperties() {
+		Properties properties = new Properties();
+		properties.setProperty("hibernate.show_sql", "true");
+		return properties;
+	}
 }
-

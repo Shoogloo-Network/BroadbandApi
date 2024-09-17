@@ -1,5 +1,7 @@
 package com.bb.config;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,44 +18,41 @@ import org.springframework.transaction.PlatformTransactionManager;
 import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
-@EnableJpaRepositories(
-    basePackages = "com.bb.secondary.repository",
-    entityManagerFactoryRef = "secondaryEntityManagerFactory",
-    transactionManagerRef = "secondaryTransactionManager"
-)
+@EnableJpaRepositories(basePackages = "com.bb.secondary.repository", entityManagerFactoryRef = "secondaryEntityManagerFactory", transactionManagerRef = "secondaryTransactionManager")
 public class SecondaryDataSourceConfig {
-	
-	 @Value("${spring.datasource.secondary.url}")
-	    private String secondaryDbUrl;
 
-	    @Value("${spring.datasource.secondary.username}")
-	    private String secondaryDbUsername;
+	@Value("${spring.datasource.secondary.url}")
+	private String secondaryDbUrl;
 
-	    @Value("${spring.datasource.secondary.password}")
-	    private String secondaryDbPassword;
+	@Value("${spring.datasource.secondary.username}")
+	private String secondaryDbUsername;
 
-    @Bean(name = "secondaryDataSource")
-    public DataSource secondaryDataSource() {
-        return DataSourceBuilder.create()
-                .url(secondaryDbUrl)
-                .username(secondaryDbUsername)
-                .password(secondaryDbPassword)
-                .build();
-    }
+	@Value("${spring.datasource.secondary.password}")
+	private String secondaryDbPassword;
 
-    @Bean(name = "secondaryEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory(
-            @Qualifier("secondaryDataSource") DataSource dataSource) {
-        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
-        emf.setDataSource(dataSource);
-        emf.setPackagesToScan("com.bb.secondary.model");
-        emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        return emf;
-    }
+	@Bean(name = "secondaryDataSource")
+	public DataSource secondaryDataSource() {
+		return DataSourceBuilder.create().url(secondaryDbUrl).username(secondaryDbUsername).password(secondaryDbPassword).build();
+	}
 
-    @Bean(name = "secondaryTransactionManager")
-    public PlatformTransactionManager secondaryTransactionManager(
-            @Qualifier("secondaryEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
-        return new JpaTransactionManager(entityManagerFactory);
-    }
+	@Bean(name = "secondaryEntityManagerFactory")
+	public LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory( @Qualifier("secondaryDataSource") DataSource dataSource ) {
+		LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+		emf.setDataSource(dataSource);
+		emf.setPackagesToScan("com.bb.secondary.model");
+		emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+		emf.setJpaProperties(additionalProperties());
+		return emf;
+	}
+
+	@Bean(name = "secondaryTransactionManager")
+	public PlatformTransactionManager secondaryTransactionManager( @Qualifier("secondaryEntityManagerFactory") EntityManagerFactory entityManagerFactory ) {
+		return new JpaTransactionManager(entityManagerFactory);
+	}
+
+	private Properties additionalProperties() {
+		Properties properties = new Properties();
+		properties.setProperty("hibernate.show_sql", "true");
+		return properties;
+	}
 }

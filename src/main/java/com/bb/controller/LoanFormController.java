@@ -12,23 +12,20 @@ import com.bb.controller.helper.Response;
 import com.bb.secondary.model.User;
 import com.bb.secondary.repository.LoanFormRepository;
 
-
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("admin/")
 public class LoanFormController {
 	@Autowired
 	LoanFormRepository loanFormRepository;
 
-	@PostMapping("save")
+	@PostMapping("home-loan/save")
 	@CrossOrigin
 	public Response saveLoanForm(@RequestBody User loanForm) {
 		loanFormRepository.save(loanForm);
-		Response res  = new Response();
+		Response res = new Response();
 		res.setPayload(loanFormRepository.save(loanForm));
 		res.setMessage("successfull");
 		res.setStatusCode(200);
 		return res;
 	}
-	
-	
 }
