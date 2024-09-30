@@ -31,8 +31,8 @@ public class User {
 	private String otp = "123456";
 	private int status;
 	@CreationTimestamp
-	@Column(updatable = false)
-	private Date created_at;
+	@Column(name ="created_at" ,updatable = false)
+	private Date createdAt;
 	@CreationTimestamp
 	private Date updated_at;
 
@@ -140,12 +140,12 @@ public class User {
 		this.status = status;
 	}
 
-	public Date getCreated_at() {
-		return created_at;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreated_at(Date created_at) {
-		this.created_at = created_at;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public Date getUpdated_at() {
@@ -161,7 +161,7 @@ public class User {
 		return "User [Id=" + Id + ", name=" + name + ", lastname=" + lastname + ", mobile=" + mobile + ", loanamount="
 				+ loanamount + ", loantype=" + loantype + ", email=" + email + ", property_city=" + property_city
 				+ ", interestrate=" + interestrate + ", tenure=" + tenure + ", gender=" + gender + ", otp=" + otp
-				+ ", status=" + status + ", created_at=" + created_at + ", updated_at=" + updated_at + "]";
+				+ ", status=" + status + ", created_at=" + createdAt + ", updated_at=" + updated_at + "]";
 	}
 
 }
